@@ -5,16 +5,18 @@ A simple video player package for the web.
 ## Installation
 
 ```bash
-npm install my-video-player
+npm install video-player-simple-js
 ```
 
 ## Usage
 
 ```js
-import createPlayer from 'my-video-player';
+import createPlayer from 'video-player-simple-js';
 
 const container = document.getElementById('video-container');
-const player = createPlayer({ container, videoSrc: 'myvideo.mp4' });
+const player = createPlayer("./myvideo.mp4", container, {
+  controls: true
+});
 
 player.play();
 ```

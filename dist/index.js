@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPlayer = createPlayer;
 exports.createAudio = createAudio;
+// Función para crear el reproductor de video
 function createPlayer(videoSrc, container, options = { controls: true, showOverlayControls: true }) {
-    var _a, _b;
+    var _a;
     const videoElement = document.createElement('video');
     videoElement.src = videoSrc;
     videoElement.controls = (_a = options.controls) !== null && _a !== void 0 ? _a : true;
@@ -13,10 +14,10 @@ function createPlayer(videoSrc, container, options = { controls: true, showOverl
         videoElement.style.width = options.width;
     if (options.height)
         videoElement.style.height = options.height;
+    // Agregar el video al contenedor
     container.appendChild(videoElement);
-    const showControls = (_b = options.showOverlayControls) !== null && _b !== void 0 ? _b : true;
-    // Crear botones superpuestos si la opción está habilitada
-    if (showControls) {
+    // Verificar si se deben mostrar los controles superpuestos
+    if (options.showOverlayControls) {
         createOverlayControls(videoElement, container);
     }
     return {
@@ -35,17 +36,31 @@ function createPlayer(videoSrc, container, options = { controls: true, showOverl
 function createOverlayControls(videoElement, container) {
     // Crear el botón de Play
     const playBtn = document.createElement('button');
-    playBtn.innerText = 'Play';
+    playBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-play" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M7 4v16l13 -8z" />
+</svg>`;
     playBtn.classList.add('overlay-btn');
-    playBtn.style.position = 'absolute';
-    playBtn.style.bottom = '20px';
-    playBtn.style.left = '20px';
     // Crear el botón de Pause
     const pauseBtn = document.createElement('button');
-    pauseBtn.innerText = 'Pause';
+    pauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-stop" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M5 5m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+</svg>`;
     pauseBtn.classList.add('overlay-btn');
-    pauseBtn.style.position = 'absolute';
-    pauseBtn.style.bottom = '20px';
+    // Estilo para los botones
+    [playBtn, pauseBtn].forEach(btn => {
+        btn.style.position = 'absolute';
+        btn.style.bottom = '20px';
+        btn.style.padding = '10px';
+        btn.style.backgroundColor = '#121212';
+        btn.style.border = 'none';
+        btn.style.color = 'white';
+        btn.style.borderRadius = '5px';
+        btn.style.cursor = 'pointer';
+    });
+    // Posicionar botones a izquierda y derecha
+    playBtn.style.left = '20px';
     pauseBtn.style.right = '20px';
     // Añadir los botones al contenedor
     container.style.position = 'relative'; // Asegurar que el contenedor tenga un posicionamiento relativo
@@ -63,15 +78,17 @@ function createOverlayControls(videoElement, container) {
         playBtn.style.display = 'block';
         pauseBtn.style.display = 'none';
     });
-    // Al principio, mostrar el botón de Play
+    // Al principio, mostrar solo el botón de Play
     pauseBtn.style.display = 'none';
 }
+// Función para crear el reproductor de audio
 function createAudio(audioSrc, container, options = { controls: true }) {
     var _a;
     const audioElement = document.createElement('audio');
     audioElement.src = audioSrc;
-    audioElement.controls = (_a = options.controls) !== null && _a !== void 0 ? _a : true; // Si no se proporciona, default es `true`
+    audioElement.controls = (_a = options.controls) !== null && _a !== void 0 ? _a : true;
     audioElement.classList.add('audio-player');
+    // Agregar el audio al contenedor
     container.appendChild(audioElement);
     return {
         play: () => audioElement.play(),
@@ -85,4 +102,5 @@ function createAudio(audioSrc, container, options = { controls: true }) {
         }
     };
 }
+// Exportar la función createPlayer como predeterminada
 exports.default = createPlayer;

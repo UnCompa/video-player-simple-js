@@ -1,3 +1,4 @@
+// Opciones para configurar el reproductor
 interface PlayerOptions {
   controls?: boolean;
   width?: string;
@@ -5,6 +6,7 @@ interface PlayerOptions {
   showOverlayControls?: boolean; // Nueva opción para mostrar los botones superpuestos
 }
 
+// Interfaz del reproductor que permite manipular el video o el audio
 interface Player {
   play: () => void;
   pause: () => void;
@@ -12,6 +14,7 @@ interface Player {
   setVolume: (volume: number) => void;
 }
 
+// Función para crear el reproductor de video
 export function createPlayer(
   videoSrc: string, 
   container: HTMLElement, 
@@ -26,10 +29,11 @@ export function createPlayer(
   if (options.width) videoElement.style.width = options.width;
   if (options.height) videoElement.style.height = options.height;
 
+  // Agregar el video al contenedor
   container.appendChild(videoElement);
-  const showControls = options.showOverlayControls ?? true;
-  // Crear botones superpuestos si la opción está habilitada
-  if (showControls) {
+
+  // Verificar si se deben mostrar los controles superpuestos
+  if (options.showOverlayControls) {
     createOverlayControls(videoElement, container);
   }
 
@@ -50,18 +54,34 @@ export function createPlayer(
 function createOverlayControls(videoElement: HTMLVideoElement, container: HTMLElement) {
   // Crear el botón de Play
   const playBtn = document.createElement('button');
-  playBtn.innerText = 'Play';
+  playBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-play" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M7 4v16l13 -8z" />
+</svg>`;
   playBtn.classList.add('overlay-btn');
-  playBtn.style.position = 'absolute';
-  playBtn.style.bottom = '20px';
-  playBtn.style.left = '20px';
   
   // Crear el botón de Pause
   const pauseBtn = document.createElement('button');
-  pauseBtn.innerText = 'Pause';
+  pauseBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-player-stop" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M5 5m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+</svg>`;
   pauseBtn.classList.add('overlay-btn');
-  pauseBtn.style.position = 'absolute';
-  pauseBtn.style.bottom = '20px';
+
+  // Estilo para los botones
+  [playBtn, pauseBtn].forEach(btn => {
+    btn.style.position = 'absolute';
+    btn.style.bottom = '20px';
+    btn.style.padding = '10px';
+    btn.style.backgroundColor = '#121212';
+    btn.style.border = 'none';
+    btn.style.color = 'white';
+    btn.style.borderRadius = '5px';
+    btn.style.cursor = 'pointer';
+  });
+
+  // Posicionar botones a izquierda y derecha
+  playBtn.style.left = '20px';
   pauseBtn.style.right = '20px';
 
   // Añadir los botones al contenedor
@@ -84,11 +104,11 @@ function createOverlayControls(videoElement: HTMLVideoElement, container: HTMLEl
     pauseBtn.style.display = 'none';
   });
   
-  // Al principio, mostrar el botón de Play
+  // Al principio, mostrar solo el botón de Play
   pauseBtn.style.display = 'none';
 }
 
-
+// Función para crear el reproductor de audio
 export function createAudio(
   audioSrc: string, 
   container: HTMLElement, 
@@ -96,8 +116,10 @@ export function createAudio(
 ): Player {
   const audioElement = document.createElement('audio');
   audioElement.src = audioSrc;
-  audioElement.controls = options.controls ?? true; // Si no se proporciona, default es `true`
+  audioElement.controls = options.controls ?? true;
   audioElement.classList.add('audio-player');
+
+  // Agregar el audio al contenedor
   container.appendChild(audioElement);
 
   return {
@@ -112,4 +134,6 @@ export function createAudio(
     }
   };
 }
+
+// Exportar la función createPlayer como predeterminada
 export default createPlayer;
