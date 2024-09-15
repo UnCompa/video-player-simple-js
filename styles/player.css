@@ -1,0 +1,46 @@
+.video-player {
+  width: 100%;
+  height: auto;
+  background-color: #121212;
+  padding: 1em;
+}
+.audio-player {
+  width: 100%;
+  height: auto;
+  background-color: #0af;
+  padding: 1em;
+}
+.overlay-btn {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 10; /* Asegurar que los botones estén sobre el video */
+}
+
+.overlay-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.btn-video-player {
+  height: max-content;
+  width: max-content;
+  background-color: #121212;
+  border: none;
+  border-radius: 5px;
+}
+.controls-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+}
+.video-player {
+  height: max-content;
+  position: relative;
+  width: max-content;
+  background-color: #212121;
+}
